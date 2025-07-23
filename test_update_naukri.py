@@ -2,15 +2,20 @@ import time
 import pytest
 from selenium import webdriver
 from selenium.webdriver import ActionChains
+import tempfile
+from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from config import *
-
+options = webdriver.ChromeOptions()
+# Use a unique temporary directory for each run
+user_data_dir = tempfile.mkdtemp()
+options.add_argument(f'--user-data-dir={user_data_dir}')
 
 @pytest.fixture
 def driver():
-    driver = webdriver.Chrome()
+    driver = webdriver.Chrome(options=options)
     yield driver
     driver.quit()
 
